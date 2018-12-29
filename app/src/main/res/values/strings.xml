@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">托拉姆助手</string>
+    <string name="app_title">托拉姆助手</string>
+    <string name="app_version">ver.1.0 by 石止萌太</string>
+
+
+    <!--侧边栏按键 start-->
+    <string name="nav_skill_menu">技能</string>
+    <string name="nav_skill_menu_1">技能详情</string>
+    <string name="nav_skill_menu_2">加点助手</string>
+    <string name="nav_skill_menu_3">连击模拟</string>
+    <string name="nav_enchantment_menu">附魔</string>
+    <string name="nav_enchantment_menu_1">附魔简介</string>
+    <string name="nav_enchantment_menu_2">附魔计算</string>
+    <string name="nav_enchantment_menu_3">附魔模拟</string>
+    <string name="nav_refine_menu">精炼</string>
+    <string name="nav_strategy_menu">攻略</string>
+    <!--侧边栏按键 end-->
+
+    <string name="_0">0</string>
+    <string name="_defalut">defalut</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="eoption_item_sub">-</string>
+    <string name="eoption_item_add">+</string>
+    <string name="eoption_item_null_hint">请选择能力</string>
+
+</resources>

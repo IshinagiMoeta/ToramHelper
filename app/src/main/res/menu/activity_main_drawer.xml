@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item android:title="@string/nav_skill_menu">
+            <menu>
+                <item
+                    android:id="@+id/skills_for_details"
+                    android:checkable="true"
+                    android:icon="@drawable/ic_menu_skill"
+                    android:title="@string/nav_skill_menu_1" />
+                <item
+                    android:id="@+id/skills_point_assistant"
+                    android:checkable="true"
+                    android:icon="@drawable/ic_menu_skills_point_assistant"
+                    android:title="@string/nav_skill_menu_2" />
+                <item
+                    android:id="@+id/skills_combo_simulator"
+                    android:checkable="true"
+                    android:icon="@drawable/ic_menu_skills_combo_simulator"
+                    android:title="@string/nav_skill_menu_3" />
+            </menu>
+        </item>
+
+        <item android:title="@string/nav_enchantment_menu">
+            <menu>
+                <item
+                    android:id="@+id/enchantment_for_details"
+                    android:checkable="true"
+                    android:icon="@drawable/ic_menu_enchantment"
+                    android:title="@string/nav_enchantment_menu_1" />
+                <item
+                    android:id="@+id/enchantment_assistant"
+                    android:checkable="true"
+                    android:icon="@drawable/ic_menu_enchantment_assistant"
+                    android:title="@string/nav_enchantment_menu_2" />
+                <item
+                    android:id="@+id/enchantment_simulator"
+                    android:checkable="true"
+                    android:icon="@drawable/ic_menu_enchantment_simulator"
+                    android:title="@string/nav_enchantment_menu_3" />
+            </menu>
+        </item>
+    </group>
+</menu>
