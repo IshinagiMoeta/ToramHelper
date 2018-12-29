@@ -22,6 +22,7 @@ import com.mika.toramhelper.enchantment.ESimulatorFragment;
 import com.mika.toramhelper.skill.SDetailsFragment;
 import com.mika.toramhelper.skill.SPointFragment;
 import com.mika.toramhelper.skill.SkillsComboFragment;
+import com.mika.toramhelper.strategy.StrategyFragment;
 
 import butterknife.BindView;
 
@@ -38,6 +39,7 @@ public class MainAct extends BaseActivity
     private EDetailsFragment eDetailsFragment;
     private EAssistantFragment eAssistantFragment;
     private ESimulatorFragment eSimulatorFragment;
+    private StrategyFragment strategyFragment;
 
     @BindView(R.id.nav_view)
     NavigationView navigationView;
@@ -61,11 +63,12 @@ public class MainAct extends BaseActivity
                 android.R.anim.fade_in, android.R.anim.fade_out);
         transaction.add(R.id.content_frame, eAssistantFragment).commit();
         mContent = eAssistantFragment;
-        priMenuItem = navigationView.getMenu().getItem(1).getSubMenu().getItem(1);
+        priMenuItem = navigationView.getMenu().getItem(2).getSubMenu().getItem(1);
         priMenuItem.setChecked(true);
     }
 
     private void initFragment() {
+        strategyFragment = new StrategyFragment();
         sDetailsFragment = new SDetailsFragment();
         sPointFragment = new SPointFragment();
         skillsComboFragment = new SkillsComboFragment();
@@ -114,7 +117,6 @@ public class MainAct extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -124,25 +126,37 @@ public class MainAct extends BaseActivity
             priMenuItem.setChecked(false);
         }
 
-        if (id == R.id.skills_for_details) {
-            //TODO 技能详情
-            switchContent(sDetailsFragment);
-        } else if (id == R.id.skills_point_assistant) {
-            //TODO 加点助手
-            switchContent(sPointFragment);
-        } else if (id == R.id.skills_combo_simulator) {
-            //TODO 连击模拟
-            switchContent(skillsComboFragment);
-        } else if (id == R.id.enchantment_for_details) {
-            //TODO 附魔简介
-            switchContent(eDetailsFragment);
-        } else if (id == R.id.enchantment_assistant) {
-            //TODO 附魔计算
-            switchContent(eAssistantFragment);
-        } else if (id == R.id.enchantment_simulator) {
-            //TODO 附魔模拟
-            switchContent(eSimulatorFragment);
+        switch (id) {
+            case R.id.menu_strategy:
+                //TODO 论坛攻略
+                switchContent(strategyFragment);
+                break;
+            case R.id.skills_for_details:
+                //TODO 技能详情
+                switchContent(sDetailsFragment);
+                break;
+            case R.id.skills_point_assistant:
+                //TODO 加点助手
+                switchContent(sPointFragment);
+                break;
+            case R.id.skills_combo_simulator:
+                //TODO 连击模拟
+                switchContent(skillsComboFragment);
+                break;
+            case R.id.enchantment_for_details:
+                //TODO 附魔简介
+                switchContent(eDetailsFragment);
+                break;
+            case R.id.enchantment_assistant:
+                //TODO 附魔计算
+                switchContent(eAssistantFragment);
+                break;
+            case R.id.enchantment_simulator:
+                //TODO 附魔模拟
+                switchContent(eSimulatorFragment);
+                break;
         }
+
         priMenuItem = item;
         drawer.closeDrawer(GravityCompat.START);
         return true;

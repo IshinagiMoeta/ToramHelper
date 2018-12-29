@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_strategy"
+            android:checkable="true"
+            android:icon="@drawable/ic_menu_strategy"
+            android:title="论坛攻略" />
         <item android:title="@string/nav_skill_menu">
             <menu>
                 <item
