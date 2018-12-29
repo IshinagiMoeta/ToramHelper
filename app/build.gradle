@@ -36,5 +36,6 @@ dependencies {
     implementation 'com.zzhoujay.okhttpimagedownloader:OkHttpImageDownloader:1.0.2'
     implementation 'com.jakewharton:butterknife:8.5.1'
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
+    implementation 'com.7heaven.widgets:segmentcontrol:1.17'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

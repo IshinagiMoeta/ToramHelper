@@ -27,5 +27,10 @@
     <string name="eoption_item_sub">-</string>
     <string name="eoption_item_add">+</string>
     <string name="eoption_item_null_hint">请选择能力</string>
+    <string name="e_assistant_lv">附魔号等级</string>
+    <string name="_155">155</string>
+    <string name="e_assistant_potential">潜力值</string>
+    <string name="e_assistant_defalut_potential">装备基础潜力值</string>
+    <string name="e_assistant_equip_select">武器|防具</string>
 
 </resources>
