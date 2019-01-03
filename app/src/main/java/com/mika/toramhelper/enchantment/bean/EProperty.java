@@ -35,7 +35,7 @@ public class EProperty {
         this.name = name;
     }
 
-    public float getPotential() {
+    public int getPotential() {
         return potential;
     }
 

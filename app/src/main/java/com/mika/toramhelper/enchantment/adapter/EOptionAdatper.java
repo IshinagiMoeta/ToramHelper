@@ -92,7 +92,6 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         viewHolder.value.setText(String.valueOf(item.getValue()));
                         clickListener.onClickItemAdd(position);
                     }
-                    LogUtils.v("add" + item.getValue());
                 }
             });
             viewHolder.subBtn.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +106,6 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         viewHolder.value.setText(String.valueOf(item.getValue()));
                         clickListener.onClickItemSub(position);
                     }
-                    LogUtils.v("sub" + item.getValue());
                 }
             });
 

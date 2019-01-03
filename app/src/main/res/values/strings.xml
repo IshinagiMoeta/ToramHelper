@@ -32,5 +32,11 @@
     <string name="e_assistant_potential">潜力值</string>
     <string name="e_assistant_defalut_potential">装备基础潜力值</string>
     <string name="e_assistant_equip_select">武器|防具</string>
+    <string name="e_assistant_start">开始强化</string>
+    <string name="e_assistant_clear">清空数据</string>
+    <string name="e_assistant_success_rate">成功率:</string>
+    <string name="e_assistant_residue">操作后潜/操作前潜:</string>
+    <string name="e_assistant_steps">详细步骤</string>
+    <string name="e_assistant_consume">消耗素材</string>
 
 </resources>

@@ -41,6 +41,7 @@
                             android:textSize="14sp" />
 
                         <EditText
+                            android:id="@+id/e_assistant_lv_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -60,7 +61,7 @@
                         android:gravity="center_horizontal">
 
                         <com.sevenheaven.segmentcontrol.SegmentControl
-                            android:id="@+id/segment_control"
+                            android:id="@+id/e_assistant_equip_selector"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -95,6 +96,7 @@
                             android:textSize="14sp" />
 
                         <EditText
+                            android:id="@+id/e_assistant_potential_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -121,6 +123,7 @@
                             android:textSize="14sp" />
 
                         <EditText
+                            android:id="@+id/e_assistant_defalut_potential_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -140,7 +143,83 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/eoption_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="500dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/e_assistant_success_rate_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/e_assistant_success_rate" />
+
+                    <TextView
+                        android:id="@+id/e_assistant_residue_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/e_assistant_residue" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/e_assistant_start_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/e_assistant_start"
+                        tools:ignore="ButtonStyle" />
+
+                    <Button
+                        android:id="@+id/e_assistant_clear_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/e_assistant_clear"
+                        tools:ignore="ButtonStyle" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/e_assistant_steps_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/default_text_bg"
+                    android:hint="@string/e_assistant_steps"
+                    android:minLines="10"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:id="@+id/e_assistant_consume_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/default_text_bg"
+                    android:hint="@string/e_assistant_consume"
+                    android:minLines="10"
+                    android:padding="5dp" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
     </ScrollView>
 
