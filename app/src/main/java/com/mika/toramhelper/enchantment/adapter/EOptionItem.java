@@ -11,8 +11,10 @@ import com.mika.toramhelper.enchantment.bean.EProperty;
 public class EOptionItem {
     private EProperty property;
     private int value;
-    private int group = 0;
-    private int position = 0;
+    private int group = -1;
+    private int position = -1;
+    private int deployValue = 0;
+    private boolean deploy = false;
 
     public EProperty getProperty() {
         return property;
@@ -44,6 +46,22 @@ public class EOptionItem {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public int getDeployValue() {
+        return deployValue;
+    }
+
+    public void setDeployValue(int deployValue) {
+        this.deployValue = deployValue;
+    }
+
+    public boolean isDeploy() {
+        return deploy;
+    }
+
+    public void setDeploy(boolean deploy) {
+        this.deploy = deploy;
     }
 
     public EOptionItem(EProperty property, int value) {

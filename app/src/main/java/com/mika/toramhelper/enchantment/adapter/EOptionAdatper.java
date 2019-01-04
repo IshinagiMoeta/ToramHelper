@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.mika.toramhelper.R;
 import com.mika.toramhelper.enchantment.bean.EPropertyConstant;
 
@@ -84,11 +83,19 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(View v) {
+                    if (item.isDeploy() && item.getValue() < 0 && item.getValue() == item.getDeployValue()) {
+                        return;
+                    }
                     if (item.getValue() < EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty())) {
                         item.setValue(item.getValue() + 1);
                         if (item.getValue() > 0) {
                             viewHolder.value.setText("+" + String.valueOf(item.getValue()));
                         }
+                        viewHolder.value.setText(String.valueOf(item.getValue()));
+                        clickListener.onClickItemAdd(position);
+                    } else if (EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty()) == 0 && item.getValue() == 0) {
+                        item.setValue(item.getValue() + 1);
+                        viewHolder.value.setText("+" + String.valueOf(item.getValue()));
                         viewHolder.value.setText(String.valueOf(item.getValue()));
                         clickListener.onClickItemAdd(position);
                     }
@@ -98,6 +105,9 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(View v) {
+                    if (item.isDeploy() && item.getValue() > 0 && item.getValue() == item.getDeployValue()) {
+                        return;
+                    }
                     if (item.getValue() > -EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty())) {
                         item.setValue(item.getValue() - 1);
                         if (item.getValue() > 0) {

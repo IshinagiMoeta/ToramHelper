@@ -39,4 +39,6 @@
     <string name="e_assistant_steps">详细步骤</string>
     <string name="e_assistant_consume">消耗素材</string>
 
+    <string name="e_assistant_repetition_hint">该属性已存在,请选择不同属性附魔</string>
+    <string name="e_assistant_nochoose_hint">防具不可选择属性觉醒,请重新选择</string>
 </resources>

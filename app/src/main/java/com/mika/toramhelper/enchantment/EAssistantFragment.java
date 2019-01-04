@@ -19,6 +19,7 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.blankj.utilcode.util.ToastUtils;
 import com.mika.toramhelper.R;
 import com.mika.toramhelper.base.BaseFragment;
 import com.mika.toramhelper.enchantment.adapter.EOptionAdatper;
@@ -42,7 +43,10 @@ import butterknife.BindView;
 public class EAssistantFragment extends BaseFragment implements View.OnClickListener {
 
 
-    private static final float CONSUME_COEFFICIENT = (float) 0.3;
+    private static final float CONSUME_COEFFICIENT = (float) 0.305;
+    private static final int WEAPON_INDEX = 0;
+    private static final int ARMOR_INDEX = 1;
+    private static final int ADDITIONAL_FACTOR = 2;
     private int lvValue = 15;
 
     private List<EPropertyGroup> groupList;
@@ -50,7 +54,10 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     private ArrayList<ArrayList<String>> propertyNameItems = new ArrayList<>();
     private OptionsPickerView pvOptions;
     private int hisop1, hisop2, selectOptions = -1;
+    private boolean weapon = true;
+    private boolean allowOperation = true;
     private int potential, defalutPotential, realPotential, hisPotential;
+    private int successRate = 100;
 
     @BindView(R.id.eoption_recycler)
     RecyclerView eOptionRecyclerView;
@@ -93,9 +100,13 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         initOptionPicker();
         initOptionList();
         initEvent();
+        clearPage();
         return view;
     }
 
+    /**
+     * 初始化事件
+     */
     private void initEvent() {
         clearBtn.setOnClickListener(this);
         startBtn.setOnClickListener(this);
@@ -131,23 +142,44 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(potentialTv.getText())) {
-                    potential = Integer.parseInt(String.valueOf(potentialTv.getText()));
-                    realPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
-                    hisPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
-                    clearList();
+                clearPage();
+            }
+        });
+        defalutPotentialTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(defalutPotentialTv.getText())) {
+                    defalutPotential = Integer.parseInt(String.valueOf(defalutPotentialTv.getText()));
                     updatePage();
                 }
+            }
+        });
+        equipSelector.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
+            @Override
+            public void onSegmentControlClick(int index) {
+                if (WEAPON_INDEX == index) {
+                    weapon = true;
+                } else if (ARMOR_INDEX == index) {
+                    weapon = false;
+                }
+                updatePage();
             }
         });
     }
 
     /**
-     * 清理页面
+     * 初始化能力列表
      */
-    private void clearList() {
-    }
-
     private void initOptionList() {
         for (int i = 0; i < 6; i++) {
             optionItems.add(new EOptionItem(null, 0));
@@ -158,9 +190,15 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         eOptionRecyclerView.setAdapter(optionAdatper);
     }
 
+    /**
+     * 能力列表事件监听器
+     */
     private EOptionItemClickListener optionItemClickListener = new EOptionItemClickListener() {
         @Override
         public void onClickItem(int position) {
+            if (optionItems.get(position).isDeploy() || realPotential == 0 || !allowOperation) {
+                return;
+            }
             selectOptions = position;
             pvOptions.show();
             updatePage();
@@ -183,49 +221,145 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.e_assistant_start_btn:
+                //点击开始强化按钮
+                if (allowOperation) {
+                    startEnchantment();
+                }
                 break;
             case R.id.e_assistant_clear_btn:
+                clearPage();
                 break;
             default:
                 break;
         }
     }
 
+    private void startEnchantment() {
+        for (EOptionItem item : optionItems) {
+            if (item.getProperty() != null && item.getValue() != 0) {
+                item.setDeploy(true);
+                item.setDeployValue(item.getValue());
+            }
+            allowOperation = item.getProperty() == null;
+        }
+        if (realPotential < 0) {
+            realPotential = 0;
+        }
+        hisPotential = realPotential;
+        updatePage();
+    }
+
+    /**
+     * 清理页面
+     */
+    @SuppressLint("SetTextI18n")
+    private void clearPage() {
+        allowOperation = true;
+        if (!TextUtils.isEmpty(potentialTv.getText())) {
+            potential = Integer.parseInt(String.valueOf(potentialTv.getText()));
+            realPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
+            hisPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
+        }
+
+        for (EOptionItem item : optionItems) {
+            item.setProperty(null);
+            item.setValue(0);
+            item.setPosition(0);
+            item.setGroup(0);
+            item.setDeploy(false);
+            item.setDeployValue(0);
+        }
+        optionAdatper.updateData(optionItems);
+        String residue = getContext().getResources().getString(R.string.e_assistant_residue);
+        residueTv.setText(residue + 0 + "/" + 0);
+        String rate = getContext().getResources().getString(R.string.e_assistant_success_rate);
+        rateTv.setText(rate + 100 + "%");
+        updatePage();
+    }
+
+    /**
+     * 更新页面
+     */
     @SuppressLint("SetTextI18n")
     private void updatePage() {
         calc();
         String residue = getContext().getResources().getString(R.string.e_assistant_residue);
         residueTv.setText(residue + realPotential + "/" + hisPotential);
+        int denominator = hisPotential > defalutPotential ? hisPotential : defalutPotential;
+        if (denominator != 0) {
+            successRate = 130 + (int) (230 * (float) realPotential / denominator);
+        }
+        if (successRate > 100) {
+            successRate = 100;
+        } else if (successRate < 0) {
+            successRate = 0;
+        }
+        successRate = successRate < 100 ? successRate : 100;
+        String rate = getContext().getResources().getString(R.string.e_assistant_success_rate);
+        rateTv.setText(rate + successRate + "%");
     }
 
 
     /**
-     * 计算
+     * 计算潜力值
      */
     private void calc() {
         if (potential == 0) {
             return;
         }
-        boolean max = true;
+        if (!allowOperation) {
+            return;
+        }
         int consumePotential = 0;
         Map<String, Integer> groupMap = new HashMap<>();
         for (EOptionItem item : optionItems) {
             if (item.getProperty() == null) {
-                max = false;
                 continue;
             }
-            if (item.getValue() < 0) {
-                consumePotential += item.getValue() * item.getProperty().getPotential() * CONSUME_COEFFICIENT;
+
+            int onesConsumePotential;
+            if (item.isDeploy()) {
+                onesConsumePotential = (item.getValue() - item.getDeployValue()) * item.getProperty().getPotential();
             } else {
-                consumePotential += item.getValue() * item.getProperty().getPotential();
+                onesConsumePotential = item.getValue() * item.getProperty().getPotential();
+            }
+
+            //双倍退潜项
+            if (item.getGroup() == 3 || item.getGroup() == 5) {
+                //攻击力选项
+                if (!weapon) {
+                    onesConsumePotential = onesConsumePotential * ADDITIONAL_FACTOR;
+                }
+            }
+
+            if (item.getGroup() == 2 || item.getGroup() == 6) {
+                //防御力选项
+                if (weapon) {
+                    onesConsumePotential = onesConsumePotential * ADDITIONAL_FACTOR;
+                }
+            }
+
+            if (item.getGroup() == 9) {
+                if (item.getPosition() <= 5) {
+                    if (!weapon) {
+                        onesConsumePotential = onesConsumePotential * ADDITIONAL_FACTOR;
+                    }
+                } else {
+                    if (weapon) {
+                        onesConsumePotential = onesConsumePotential * ADDITIONAL_FACTOR;
+                    }
+                }
+            }
+
+            if (item.getValue() < 0) {
+                onesConsumePotential = (int) (onesConsumePotential * CONSUME_COEFFICIENT);
+                consumePotential += onesConsumePotential;
+            } else {
+                consumePotential += onesConsumePotential;
             }
             //计算同类加成
             Integer num = groupMap.get(String.valueOf(item.getGroup()));
             groupMap.put(String.valueOf(item.getGroup()), num == null ? 1 : num + 1);
-        }
-
-        if (max) {
-            return;
         }
 
         for (Object key : groupMap.keySet()) {
@@ -236,7 +370,10 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         realPotential = hisPotential - consumePotential;
     }
 
-    private void initOptionPicker() {//条件选择器初始化
+    /**
+     * 条件选择器初始化
+     */
+    private void initOptionPicker() {
         pvOptions = new OptionsPickerBuilder(getContext(), new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
@@ -259,17 +396,9 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         setPickerValue();
     }
 
-    private void selectOption(int selectOptions, int options1, int options2) {
-        if (selectOptions != -1) {
-            EOptionItem item = optionItems.get(selectOptions);
-            item.setGroup(options1);
-            item.setPosition(options2);
-            item.setProperty(groupList.get(options1).getPropertyList().get(options2));
-            optionAdatper.updateData(optionItems);
-            updatePage();
-        }
-    }
-
+    /**
+     * 条件选择器设值
+     */
     private void setPickerValue() {
         groupList = EPropertyConstant.getInstance().getGroupList();
         for (EPropertyGroup group : groupList) {
@@ -283,5 +412,43 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             propertyNameItems.add(propertyList);
         }
         pvOptions.setPicker(groupNameItems, propertyNameItems);
+    }
+
+    /**
+     * 条件选择器做出选择
+     *
+     * @param selectOptions 触发选择器的列表位置
+     * @param options1      选择出的组
+     * @param options2      选择出的列
+     */
+    private void selectOption(int selectOptions, int options1, int options2) {
+        if (options1 == 0 && options2 == 0) {
+            EOptionItem nullItem = new EOptionItem(null, 0);
+            optionItems.set(selectOptions, nullItem);
+            optionAdatper.updateData(optionItems);
+            updatePage();
+            return;
+        }
+        if (!weapon) {
+            if (options1 == groupList.size() - 1 || options1 == groupList.size() - 2) {
+                ToastUtils.showShort(R.string.e_assistant_repetition_hint);
+                return;
+            }
+        }
+        for (EOptionItem item : optionItems) {
+            if (item.getGroup() == options1 && item.getPosition() == options2) {
+                ToastUtils.showShort(R.string.e_assistant_nochoose_hint);
+                return;
+            }
+        }
+        if (selectOptions != -1) {
+            EOptionItem item = optionItems.get(selectOptions);
+            item.setGroup(options1);
+            item.setPosition(options2);
+            item.setValue(0);
+            item.setProperty(groupList.get(options1).getPropertyList().get(options2));
+            optionAdatper.updateData(optionItems);
+            updatePage();
+        }
     }
 }

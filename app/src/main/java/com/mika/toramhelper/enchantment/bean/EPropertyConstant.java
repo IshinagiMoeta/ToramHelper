@@ -27,17 +27,27 @@ public class EPropertyConstant {
     }
 
     private EPropertyConstant() {
+        initNull();
         initNumerical();
+        //HPMP
         initHPMP();
+        //攻击
         initDamage();
+        //防御
         initDefense();
+        //命中
         initAccuracy();
+        //回避
         initAvoid();
+        //速度
         initSpeed();
         initCritical();
+        //属性
         initNature();
         initSpecial();
-        initAwaken();
+        //属性觉醒
+        initAwaken1();
+        initAwaken2();
     }
 
     public int getPropertyLimit(int lvValue, EProperty property) {
@@ -45,6 +55,15 @@ public class EPropertyConstant {
         int limit = (lvValue < property.getMax()) ? lvValue : property.getMax();
         limit = (limit < limitProperty) ? limit : limitProperty;
         return limit;
+    }
+
+    private void initNull() {
+        EPropertyGroup nullGroup = new EPropertyGroup();
+        nullGroup.setName("空");
+        List<EProperty> propertyList = new ArrayList<>();
+        propertyList.add(new EProperty("空", 0));
+        nullGroup.setPropertyList(propertyList);
+        groupList.add(nullGroup);
     }
 
     private void initNumerical() {
@@ -186,16 +205,30 @@ public class EPropertyConstant {
         groupList.add(specialGroup);
     }
 
-    private void initAwaken() {
+    private void initAwaken1() {
         EPropertyGroup awakenGroup = new EPropertyGroup();
-        awakenGroup.setName("属性觉醒");
+        awakenGroup.setName("属性觉醒(原属)");
         List<EProperty> propertyList = new ArrayList<>();
-        propertyList.add(new EProperty("火属性", 100, 1, 1));
-        propertyList.add(new EProperty("水属性", 100, 1, 1));
-        propertyList.add(new EProperty("风属性", 100, 1, 1));
-        propertyList.add(new EProperty("地属性", 100, 1, 1));
-        propertyList.add(new EProperty("光属性", 100, 1, 1));
-        propertyList.add(new EProperty("暗属性", 100, 1, 1));
+        propertyList.add(new EProperty("火属性", 10, 1, 0));
+        propertyList.add(new EProperty("水属性", 10, 1, 0));
+        propertyList.add(new EProperty("风属性", 10, 1, 0));
+        propertyList.add(new EProperty("地属性", 10, 1, 0));
+        propertyList.add(new EProperty("光属性", 10, 1, 0));
+        propertyList.add(new EProperty("暗属性", 10, 1, 0));
+        awakenGroup.setPropertyList(propertyList);
+        groupList.add(awakenGroup);
+    }
+
+    private void initAwaken2() {
+        EPropertyGroup awakenGroup = new EPropertyGroup();
+        awakenGroup.setName("属性觉醒(非原属)");
+        List<EProperty> propertyList = new ArrayList<>();
+        propertyList.add(new EProperty("火属性", 100, 1, 0));
+        propertyList.add(new EProperty("水属性", 100, 1, 0));
+        propertyList.add(new EProperty("风属性", 100, 1, 0));
+        propertyList.add(new EProperty("地属性", 100, 1, 0));
+        propertyList.add(new EProperty("光属性", 100, 1, 0));
+        propertyList.add(new EProperty("暗属性", 100, 1, 0));
         awakenGroup.setPropertyList(propertyList);
         groupList.add(awakenGroup);
     }
