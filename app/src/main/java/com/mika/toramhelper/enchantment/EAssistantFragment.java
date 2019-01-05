@@ -47,10 +47,10 @@ import butterknife.BindView;
 public class EAssistantFragment extends BaseFragment implements View.OnClickListener {
 
 
-    private static final float CONSUME_COEFFICIENT = (float) 0.305;
     private static final int WEAPON_INDEX = 0;
     private static final int ARMOR_INDEX = 1;
     private static final int ADDITIONAL_FACTOR = 2;
+    private static double CONSUME_COEFFICIENT = (float) 0.305;
     private List<EPropertyGroup> groupList;
 
     private ArrayList<String> groupNameItems = new ArrayList<>();
@@ -74,6 +74,8 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     Button startBtn;
     @BindView(R.id.e_assistant_lv_tv)
     TextView lvTv;
+    @BindView(R.id.e_assistant_point_tv)
+    TextView pointTv;
     @BindView(R.id.e_assistant_potential_tv)
     TextView potentialTv;
     @BindView(R.id.e_assistant_defalut_potential_tv)
@@ -180,7 +182,28 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 } else if (ARMOR_INDEX == index) {
                     weapon = false;
                 }
-                updatePage();
+                clearPage();
+            }
+        });
+        pointTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(pointTv.getText())) {
+                    int point = Integer.parseInt(String.valueOf(pointTv.getText()));
+                    CONSUME_COEFFICIENT = ((double) point * 0.001 + 0.05);
+                    log(String.valueOf(CONSUME_COEFFICIENT));
+                    clearPage();
+                }
             }
         });
     }
@@ -273,6 +296,8 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                         }
                     });
             hintDialogBuild.show();
+        } else {
+            potentialTv.setText("");
         }
     }
 
@@ -518,13 +543,13 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         }
         if (!weapon) {
             if (options1 == groupList.size() - 1 || options1 == groupList.size() - 2) {
-                ToastUtils.showShort(R.string.e_assistant_repetition_hint);
+                ToastUtils.showShort(R.string.e_assistant_no_choose_hint);
                 return;
             }
         }
         for (EOptionItem item : optionItems) {
             if (item.getGroup() == options1 && item.getPosition() == options2) {
-                ToastUtils.showShort(R.string.e_assistant_no_choose_hint);
+                ToastUtils.showShort(R.string.e_assistant_repetition_hint);
                 return;
             }
         }

@@ -19,7 +19,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -49,11 +49,43 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
+                            android:cursorVisible="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:inputType="number"
-                            android:text="@string/_155"
+                            android:text="@string/_165"
+                            android:textCursorDrawable="@null"
+                            android:textSize="14sp"
+                            tools:ignore="LabelFor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/e_assistant_point"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/e_assistant_point_tv"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:cursorVisible="true"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:text="@string/_255"
+                            android:textCursorDrawable="@null"
                             android:textSize="14sp"
                             tools:ignore="LabelFor" />
                     </LinearLayout>
@@ -105,11 +137,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
+                            android:cursorVisible="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:inputType="number"
-                            android:text="@string/_0"
+                            android:text=""
+                            android:textCursorDrawable="@null"
                             android:textSize="14sp"
                             tools:ignore="LabelFor" />
 
@@ -139,16 +173,21 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
+                            android:cursorVisible="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:inputType="number"
-                            android:text="@string/_0"
+                            android:text="@string/_15"
+                            android:textCursorDrawable="@null"
                             android:textSize="14sp"
                             tools:ignore="LabelFor" />
                     </LinearLayout>
-                </LinearLayout>
 
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="50dp" />
+                </LinearLayout>
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView

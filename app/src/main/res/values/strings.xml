@@ -17,7 +17,6 @@
     <string name="nav_strategy_menu">攻略</string>
     <!--侧边栏按键 end-->
 
-    <string name="_0">0</string>
     <string name="_defalut">defalut</string>
     <string name="mika_hint">提示</string>
     <string name="mika_warn">警告</string>
@@ -32,8 +31,8 @@
     <string name="eoption_item_sub">-</string>
     <string name="eoption_item_add">+</string>
     <string name="eoption_item_null_hint">请选择能力</string>
-    <string name="e_assistant_lv">附魔号等级</string>
-    <string name="_155">155</string>
+    <string name="e_assistant_lv">角色等级</string>
+    <string name="e_assistant_point">技巧点数</string>
     <string name="e_assistant_potential">潜力值</string>
     <string name="e_assistant_defalut_potential">装备基础潜力值</string>
     <string name="e_assistant_equip_select">武器|防具</string>
@@ -44,10 +43,16 @@
     <string name="e_assistant_steps">详细步骤</string>
     <string name="e_assistant_consume">消耗素材</string>
 
-
-    <string name="e_assistant_repetition_hint">该属性已存在,请选择不同属性附魔</string>
     <string name="e_assistant_no_fill_potential_hint">请先填写潜力值后再尝试选择能力</string>
     <string name="e_assistant_not_allowOperation_hint">潜力值为0或者六项属性附满后不可以再次附魔</string>
     <string name="e_assistant_change_potential_hint">修改潜力值会清空整个页面，请确认后再修改</string>
+    <string name="e_assistant_repetition_hint">该属性已存在,请选择不同属性附魔</string>
     <string name="e_assistant_no_choose_hint">防具不可选择属性觉醒,请重新选择</string>
+    
+    <string name="_0">0</string>
+    <string name="_15">15</string>
+    <string name="_165">165</string>
+    <string name="_155">155</string>
+    <string name="_255">255</string>
+
 </resources>
