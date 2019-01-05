@@ -24,7 +24,14 @@ public class EOptionItem {
         this.property = property;
     }
 
-    public int getValue() {
+    public String getValue() {
+        if (value > 0) {
+            return "+" + value;
+        }
+        return String.valueOf(value);
+    }
+
+    public int getValueNum() {
         return value;
     }
 

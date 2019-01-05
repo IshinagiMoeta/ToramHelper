@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.mika.toramhelper.R;
 import com.mika.toramhelper.enchantment.bean.EPropertyConstant;
 
@@ -30,6 +31,7 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int lvLimit = 15;
     private static final int TYPE_NULL = 0;
     private static final int TYPE_DEFAULT = 1;
+    private boolean allowOperation = true;
 
 
     public EOptionAdatper(Context context, ArrayList<EOptionItem> data, int lvLimit, EOptionItemClickListener listener) {
@@ -64,6 +66,10 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return holder;
     }
 
+    public void setAllowOperation(boolean allowOperation) {
+        this.allowOperation = allowOperation;
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
@@ -83,19 +89,22 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(View v) {
-                    if (item.isDeploy() && item.getValue() < 0 && item.getValue() == item.getDeployValue()) {
+                    if (!allowOperation) {
+                        ToastUtils.showShort(R.string.e_assistant_not_allowOperation_hint);
                         return;
                     }
-                    if (item.getValue() < EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty())) {
-                        item.setValue(item.getValue() + 1);
-                        if (item.getValue() > 0) {
-                            viewHolder.value.setText("+" + String.valueOf(item.getValue()));
-                        }
+                    if (item.isDeploy() && item.getValueNum() < 0 && item.getValueNum() == item.getDeployValue()) {
+                        return;
+                    }
+                    if (item.getValueNum() < EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty())) {
+                        item.setValue(item.getValueNum() + 1);
+                        viewHolder.value.setText(item.getValue());
                         viewHolder.value.setText(String.valueOf(item.getValue()));
                         clickListener.onClickItemAdd(position);
-                    } else if (EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty()) == 0 && item.getValue() == 0) {
-                        item.setValue(item.getValue() + 1);
-                        viewHolder.value.setText("+" + String.valueOf(item.getValue()));
+                    } else if (EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty()) == 0 && item.getValueNum() == 0) {
+                        item.setValue(item.getValueNum() + 1);
+                        viewHolder.value.setText(item.getValue());
+                        ;
                         viewHolder.value.setText(String.valueOf(item.getValue()));
                         clickListener.onClickItemAdd(position);
                     }
@@ -105,14 +114,16 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(View v) {
-                    if (item.isDeploy() && item.getValue() > 0 && item.getValue() == item.getDeployValue()) {
+                    if (!allowOperation) {
+                        ToastUtils.showShort(R.string.e_assistant_not_allowOperation_hint);
                         return;
                     }
-                    if (item.getValue() > -EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty())) {
-                        item.setValue(item.getValue() - 1);
-                        if (item.getValue() > 0) {
-                            viewHolder.value.setText("+" + String.valueOf(item.getValue()));
-                        }
+                    if (item.isDeploy() && item.getValueNum() > 0 && item.getValueNum() == item.getDeployValue()) {
+                        return;
+                    }
+                    if (item.getValueNum() > -EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty())) {
+                        item.setValue(item.getValueNum() - 1);
+                        viewHolder.value.setText(item.getValue());
                         viewHolder.value.setText(String.valueOf(item.getValue()));
                         clickListener.onClickItemSub(position);
                     }

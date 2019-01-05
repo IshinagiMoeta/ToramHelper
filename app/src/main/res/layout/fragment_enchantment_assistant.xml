@@ -7,7 +7,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:id="@+id/enchantment_assistant_container"
@@ -19,6 +20,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -31,6 +33,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -44,12 +47,12 @@
                             android:id="@+id/e_assistant_lv_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:inputType="number"
-                            android:numeric="integer"
                             android:text="@string/_155"
                             android:textSize="14sp"
                             tools:ignore="LabelFor" />
@@ -86,6 +89,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -99,15 +103,22 @@
                             android:id="@+id/e_assistant_potential_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:inputType="number"
-                            android:numeric="integer"
                             android:text="@string/_0"
                             android:textSize="14sp"
                             tools:ignore="LabelFor" />
+
+                        <ImageView
+                            android:id="@+id/e_assistant_potential_lock"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_enchantment_unlock" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -126,12 +137,12 @@
                             android:id="@+id/e_assistant_defalut_potential_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
                             android:inputType="number"
-                            android:numeric="integer"
                             android:text="@string/_0"
                             android:textSize="14sp"
                             tools:ignore="LabelFor" />
@@ -218,8 +229,6 @@
                     android:padding="5dp" />
 
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 

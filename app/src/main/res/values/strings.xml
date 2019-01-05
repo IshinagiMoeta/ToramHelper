@@ -19,6 +19,11 @@
 
     <string name="_0">0</string>
     <string name="_defalut">defalut</string>
+    <string name="mika_hint">提示</string>
+    <string name="mika_warn">警告</string>
+    <string name="mika_close">关闭</string>
+    <string name="mika_ok">确认</string>
+    <string name="mika_cancel">取消</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -39,6 +44,10 @@
     <string name="e_assistant_steps">详细步骤</string>
     <string name="e_assistant_consume">消耗素材</string>
 
+
     <string name="e_assistant_repetition_hint">该属性已存在,请选择不同属性附魔</string>
-    <string name="e_assistant_nochoose_hint">防具不可选择属性觉醒,请重新选择</string>
+    <string name="e_assistant_no_fill_potential_hint">请先填写潜力值后再尝试选择能力</string>
+    <string name="e_assistant_not_allowOperation_hint">潜力值为0或者六项属性附满后不可以再次附魔</string>
+    <string name="e_assistant_change_potential_hint">修改潜力值会清空整个页面，请确认后再修改</string>
+    <string name="e_assistant_no_choose_hint">防具不可选择属性觉醒,请重新选择</string>
 </resources>

@@ -2,8 +2,10 @@ package com.mika.toramhelper.enchantment;
 
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -13,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.mika.toramhelper.R;
 import com.mika.toramhelper.base.BaseFragment;
@@ -47,17 +51,20 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     private static final int WEAPON_INDEX = 0;
     private static final int ARMOR_INDEX = 1;
     private static final int ADDITIONAL_FACTOR = 2;
-    private int lvValue = 15;
-
     private List<EPropertyGroup> groupList;
+
     private ArrayList<String> groupNameItems = new ArrayList<>();
     private ArrayList<ArrayList<String>> propertyNameItems = new ArrayList<>();
     private OptionsPickerView pvOptions;
-    private int hisop1, hisop2, selectOptions = -1;
-    private boolean weapon = true;
     private boolean allowOperation = true;
+    private boolean weapon = true;
+    private boolean potentialLock = false;
+    private int lvValue = 15;
+    private int stepNum = 0;
+    private int selectOptions = -1;
     private int potential, defalutPotential, realPotential, hisPotential;
     private int successRate = 100;
+    private StringBuilder stepBuilder, materialBuilder;
 
     @BindView(R.id.eoption_recycler)
     RecyclerView eOptionRecyclerView;
@@ -81,10 +88,11 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     TextView consumeTv;
     @BindView(R.id.e_assistant_equip_selector)
     SegmentControl equipSelector;
+    @BindView(R.id.e_assistant_potential_lock)
+    ImageView potentialImg;
 
 
     private EOptionAdatper optionAdatper;
-    private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<EOptionItem> optionItems = new ArrayList<>();
 
     public EAssistantFragment() {
@@ -129,10 +137,10 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 }
             }
         });
+        potentialTv.setOnClickListener(this);
         potentialTv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -185,7 +193,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             optionItems.add(new EOptionItem(null, 0));
         }
         optionAdatper = new EOptionAdatper(getContext(), optionItems, lvValue, optionItemClickListener);
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         eOptionRecyclerView.setLayoutManager(mLayoutManager);
         eOptionRecyclerView.setAdapter(optionAdatper);
     }
@@ -197,6 +205,12 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         @Override
         public void onClickItem(int position) {
             if (optionItems.get(position).isDeploy() || realPotential == 0 || !allowOperation) {
+                if (potential == 0) {
+                    ToastUtils.showShort(R.string.e_assistant_no_fill_potential_hint);
+                }
+                if (!allowOperation) {
+                    ToastUtils.showShort(R.string.e_assistant_not_allowOperation_hint);
+                }
                 return;
             }
             selectOptions = position;
@@ -224,29 +238,100 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 //点击开始强化按钮
                 if (allowOperation) {
                     startEnchantment();
+                } else {
+                    ToastUtils.showShort(R.string.e_assistant_not_allowOperation_hint);
                 }
                 break;
             case R.id.e_assistant_clear_btn:
                 clearPage();
+                break;
+            case R.id.e_assistant_potential_tv:
+                changePotentialHint();
                 break;
             default:
                 break;
         }
     }
 
+    private void changePotentialHint() {
+        if (potentialLock) {
+            AlertDialog.Builder hintDialogBuild =
+                    new AlertDialog.Builder(getContext());
+            hintDialogBuild.setTitle(StringUtils.getString(R.string.mika_hint));
+            hintDialogBuild.setMessage(StringUtils.getString(R.string.e_assistant_change_potential_hint));
+            hintDialogBuild.setPositiveButton(StringUtils.getString(R.string.mika_ok),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            unLockPotential();
+                        }
+                    });
+            hintDialogBuild.setNegativeButton(StringUtils.getString(R.string.mika_close),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            hintDialogBuild.show();
+        }
+    }
+
+    /**
+     * 点击强化
+     */
     private void startEnchantment() {
         for (EOptionItem item : optionItems) {
-            if (item.getProperty() != null && item.getValue() != 0) {
+            if (item.getProperty() != null && item.getValueNum() != 0) {
                 item.setDeploy(true);
-                item.setDeployValue(item.getValue());
+                item.setDeployValue(item.getValueNum());
             }
             allowOperation = item.getProperty() == null;
+            optionAdatper.setAllowOperation(allowOperation);
         }
         if (realPotential < 0) {
             realPotential = 0;
+            allowOperation = false;
+            optionAdatper.setAllowOperation(allowOperation);
         }
+        outputStep();
+        outputMaterial();
         hisPotential = realPotential;
         updatePage();
+    }
+
+    /**
+     * 输出素材
+     */
+    private void outputMaterial() {
+    }
+
+    /**
+     * 输出步骤
+     */
+    private void outputStep() {
+        if (stepBuilder == null) {
+            stepBuilder = new StringBuilder();
+        }
+        stepNum++;
+        stepBuilder.append(stepNum).append("、附");
+        for (EOptionItem item : optionItems) {
+            if (item.getProperty() != null) {
+                int value = item.getValueNum() * item.getProperty().getValue();
+                String valueStr;
+                if (value > 0) {
+                    valueStr = "+" + value;
+                } else {
+                    valueStr = String.valueOf(value);
+                }
+                stepBuilder.append(item.getProperty().getName()).append(" ").append(valueStr).append(" | ");
+            }
+        }
+        stepBuilder.deleteCharAt(stepBuilder.lastIndexOf("|"));
+        stepBuilder.append("剩余潜力:").append(realPotential).append(" ");
+        String rate = StringUtils.getString(R.string.e_assistant_success_rate);
+        stepBuilder.append(rate).append(successRate).append("%");
+        stepBuilder.append("\n");
+        stepsTv.setText(stepBuilder);
     }
 
     /**
@@ -255,6 +340,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     @SuppressLint("SetTextI18n")
     private void clearPage() {
         allowOperation = true;
+        optionAdatper.setAllowOperation(true);
         if (!TextUtils.isEmpty(potentialTv.getText())) {
             potential = Integer.parseInt(String.valueOf(potentialTv.getText()));
             realPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
@@ -270,10 +356,12 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             item.setDeployValue(0);
         }
         optionAdatper.updateData(optionItems);
-        String residue = getContext().getResources().getString(R.string.e_assistant_residue);
+        String residue = StringUtils.getString(R.string.e_assistant_residue);
         residueTv.setText(residue + 0 + "/" + 0);
-        String rate = getContext().getResources().getString(R.string.e_assistant_success_rate);
+        String rate = StringUtils.getString(R.string.e_assistant_success_rate);
         rateTv.setText(rate + 100 + "%");
+        unLockPotential();
+        stepsTv.setText("");
         updatePage();
     }
 
@@ -283,7 +371,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     @SuppressLint("SetTextI18n")
     private void updatePage() {
         calc();
-        String residue = getContext().getResources().getString(R.string.e_assistant_residue);
+        String residue = StringUtils.getString(R.string.e_assistant_residue);
         residueTv.setText(residue + realPotential + "/" + hisPotential);
         int denominator = hisPotential > defalutPotential ? hisPotential : defalutPotential;
         if (denominator != 0) {
@@ -295,7 +383,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             successRate = 0;
         }
         successRate = successRate < 100 ? successRate : 100;
-        String rate = getContext().getResources().getString(R.string.e_assistant_success_rate);
+        String rate = StringUtils.getString(R.string.e_assistant_success_rate);
         rateTv.setText(rate + successRate + "%");
     }
 
@@ -319,9 +407,9 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
 
             int onesConsumePotential;
             if (item.isDeploy()) {
-                onesConsumePotential = (item.getValue() - item.getDeployValue()) * item.getProperty().getPotential();
+                onesConsumePotential = (item.getValueNum() - item.getDeployValue()) * item.getProperty().getPotential();
             } else {
-                onesConsumePotential = item.getValue() * item.getProperty().getPotential();
+                onesConsumePotential = item.getValueNum() * item.getProperty().getPotential();
             }
 
             //双倍退潜项
@@ -351,7 +439,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 }
             }
 
-            if (item.getValue() < 0) {
+            if (item.getValueNum() < 0) {
                 onesConsumePotential = (int) (onesConsumePotential * CONSUME_COEFFICIENT);
                 consumePotential += onesConsumePotential;
             } else {
@@ -362,7 +450,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             groupMap.put(String.valueOf(item.getGroup()), num == null ? 1 : num + 1);
         }
 
-        for (Object key : groupMap.keySet()) {
+        for (String key : groupMap.keySet()) {
             if (groupMap.get(key) > 1) {
                 consumePotential = (int) (consumePotential * ((100.0 + groupMap.get(key) * groupMap.get(key) * 5) / 100));
             }
@@ -388,8 +476,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 .setOptionsSelectChangeListener(new OnOptionsSelectChangeListener() {
                     @Override
                     public void onOptionsSelectChanged(int options1, int options2, int options3) {
-                        hisop1 = options1;
-                        hisop2 = options2;
+
                     }
                 })
                 .build();
@@ -407,7 +494,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             ArrayList<String> propertyList = new ArrayList<>();
             for (EProperty property : group.getPropertyList()) {
                 //读取二级列表
-                propertyList.add(property.getName() + "(" + (int) property.getPotential() + ")");
+                propertyList.add(property.getName() + "(" + property.getPotential() + ")");
             }
             propertyNameItems.add(propertyList);
         }
@@ -437,7 +524,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         }
         for (EOptionItem item : optionItems) {
             if (item.getGroup() == options1 && item.getPosition() == options2) {
-                ToastUtils.showShort(R.string.e_assistant_nochoose_hint);
+                ToastUtils.showShort(R.string.e_assistant_no_choose_hint);
                 return;
             }
         }
@@ -449,6 +536,17 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             item.setProperty(groupList.get(options1).getPropertyList().get(options2));
             optionAdatper.updateData(optionItems);
             updatePage();
+            lockPotential();
         }
+    }
+
+    private void lockPotential() {
+        potentialLock = true;
+        potentialImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_enchantment_lock));
+    }
+
+    private void unLockPotential() {
+        potentialLock = false;
+        potentialImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_enchantment_unlock));
     }
 }
