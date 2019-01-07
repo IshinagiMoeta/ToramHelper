@@ -70,9 +70,12 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.allowOperation = allowOperation;
     }
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void setLvLimit(int lvLimit) {
+        this.lvLimit = lvLimit;
+    }
 
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         if (optionItemList.get(position).getProperty() != null) {
             final DefalutViewHolder viewHolder = (DefalutViewHolder) holder;
             final EOptionItem item = optionItemList.get(position);
@@ -104,9 +107,31 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     } else if (EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty()) == 0 && item.getValueNum() == 0) {
                         item.setValue(item.getValueNum() + 1);
                         viewHolder.value.setText(item.getValue());
-                        ;
                         viewHolder.value.setText(String.valueOf(item.getValue()));
                         clickListener.onClickItemAdd(position);
+                    }
+                }
+            });
+            viewHolder.maxBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!allowOperation) {
+                        ToastUtils.showShort(R.string.e_assistant_not_allowOperation_hint);
+                        return;
+                    }
+                    if (item.isDeploy() && item.getValueNum() < 0 && item.getValueNum() == item.getDeployValue()) {
+                        return;
+                    }
+                    if (item.getValueNum() < EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty())) {
+                        item.setValue(EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty()));
+                        viewHolder.value.setText(item.getValue());
+                        viewHolder.value.setText(String.valueOf(item.getValue()));
+                        clickListener.onClickItemMax(position);
+                    } else if (EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty()) == 0 && item.getValueNum() == 0) {
+                        item.setValue(item.getValueNum() + 1);
+                        viewHolder.value.setText(item.getValue());
+                        viewHolder.value.setText(String.valueOf(item.getValue()));
+                        clickListener.onClickItemMax(position);
                     }
                 }
             });
@@ -126,6 +151,26 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         viewHolder.value.setText(item.getValue());
                         viewHolder.value.setText(String.valueOf(item.getValue()));
                         clickListener.onClickItemSub(position);
+                    }
+                }
+            });
+
+            viewHolder.minBtn.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onClick(View v) {
+                    if (!allowOperation) {
+                        ToastUtils.showShort(R.string.e_assistant_not_allowOperation_hint);
+                        return;
+                    }
+                    if (item.isDeploy() && item.getValueNum() > 0 && item.getValueNum() == item.getDeployValue()) {
+                        return;
+                    }
+                    if (item.getValueNum() > -EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty())) {
+                        item.setValue(-EPropertyConstant.getInstance().getPropertyLimit(lvLimit, item.getProperty()));
+                        viewHolder.value.setText(item.getValue());
+                        viewHolder.value.setText(String.valueOf(item.getValue()));
+                        clickListener.onClickItemMin(position);
                     }
                 }
             });
@@ -154,13 +199,17 @@ public class EOptionAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return optionItemList.size();
     }
 
-    public static class DefalutViewHolder extends RecyclerView.ViewHolder {
+    static class DefalutViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.eoption_item_name)
         TextView name;
         @BindView(R.id.eoption_item_sub)
         View subBtn;
         @BindView(R.id.eoption_item_add)
         View addBtn;
+        @BindView(R.id.eoption_item_min)
+        View minBtn;
+        @BindView(R.id.eoption_item_max)
+        View maxBtn;
         @BindView(R.id.eoption_item_value)
         TextView value;
         View view;

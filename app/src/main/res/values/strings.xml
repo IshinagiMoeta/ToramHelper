@@ -29,7 +29,9 @@
 
     <string name="action_settings">Settings</string>
     <string name="eoption_item_sub">-</string>
+    <string name="eoption_item_min">MIN</string>
     <string name="eoption_item_add">+</string>
+    <string name="eoption_item_max">MAX</string>
     <string name="eoption_item_null_hint">请选择能力</string>
     <string name="e_assistant_lv">角色等级</string>
     <string name="e_assistant_point">技巧点数</string>
@@ -45,10 +47,10 @@
 
     <string name="e_assistant_no_fill_potential_hint">请先填写潜力值后再尝试选择能力</string>
     <string name="e_assistant_not_allowOperation_hint">潜力值为0或者六项属性附满后不可以再次附魔</string>
-    <string name="e_assistant_change_potential_hint">修改潜力值会清空整个页面，请确认后再修改</string>
+    <string name="e_assistant_change_potential_hint">解锁需要清空整个页面重新计算，是否确定?</string>
     <string name="e_assistant_repetition_hint">该属性已存在,请选择不同属性附魔</string>
     <string name="e_assistant_no_choose_hint">防具不可选择属性觉醒,请重新选择</string>
-    
+
     <string name="_0">0</string>
     <string name="_15">15</string>
     <string name="_165">165</string>

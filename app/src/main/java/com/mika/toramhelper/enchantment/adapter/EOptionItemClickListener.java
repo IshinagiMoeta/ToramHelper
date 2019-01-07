@@ -12,4 +12,8 @@ public interface EOptionItemClickListener {
     void onClickItemSub(int position);
 
     void onClickItemAdd(int position);
+
+    void onClickItemMax(int position);
+
+    void onClickItemMin(int position);
 }

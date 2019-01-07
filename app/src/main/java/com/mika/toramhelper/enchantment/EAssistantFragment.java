@@ -59,7 +59,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     private boolean allowOperation = true;
     private boolean weapon = true;
     private boolean potentialLock = false;
-    private int lvValue = 15;
+    private int lvValue = 16;
     private int stepNum = 0;
     private int selectOptions = -1;
     private int potential, defalutPotential, realPotential, hisPotential;
@@ -136,10 +136,13 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(lvTv.getText())) {
                     Integer lvNum = Integer.parseInt(String.valueOf(lvTv.getText()));
                     lvValue = lvNum / 10;
+                    optionAdatper.setLvLimit(lvValue);
+                    clearPage();
                 }
             }
         });
         potentialTv.setOnClickListener(this);
+        potentialImg.setOnClickListener(this);
         potentialTv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -152,7 +155,12 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
 
             @Override
             public void afterTextChanged(Editable s) {
-                clearPage();
+                if (!TextUtils.isEmpty(potentialTv.getText())) {
+                    potential = Integer.parseInt(String.valueOf(potentialTv.getText()));
+                    realPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
+                    hisPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
+                }
+                updatePage();
             }
         });
         defalutPotentialTv.addTextChangedListener(new TextWatcher() {
@@ -244,13 +252,21 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         @Override
         public void onClickItemSub(int position) {
             updatePage();
-            log("onClickItemSub");
         }
 
         @Override
         public void onClickItemAdd(int position) {
             updatePage();
-            log("onClickItemAdd");
+        }
+
+        @Override
+        public void onClickItemMax(int position) {
+            updatePage();
+        }
+
+        @Override
+        public void onClickItemMin(int position) {
+            updatePage();
         }
     };
 
@@ -269,6 +285,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 clearPage();
                 break;
             case R.id.e_assistant_potential_tv:
+            case R.id.e_assistant_potential_lock:
                 changePotentialHint();
                 break;
             default:
@@ -287,6 +304,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             unLockPotential();
+                            clearPage();
                         }
                     });
             hintDialogBuild.setNegativeButton(StringUtils.getString(R.string.mika_close),
@@ -305,6 +323,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
      * 点击强化
      */
     private void startEnchantment() {
+        lockPotential();
         for (EOptionItem item : optionItems) {
             if (item.getProperty() != null && item.getValueNum() != 0) {
                 item.setDeploy(true);
@@ -328,6 +347,57 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
      * 输出素材
      */
     private void outputMaterial() {
+        int metal = 0, cloth = 0, beast = 0, wood = 0, drug = 0, magic = 0;
+        for (EOptionItem item : optionItems) {
+            if (item.getProperty() != null) {
+                switch (item.getProperty().getMaterialType()) {
+                    case EProperty.METAL:
+                        metal = metal + getMaterial(item.getValueNum(), item.getProperty().getMaterialValue());
+                        break;
+                    case EProperty.CLOTH:
+                        cloth = cloth + getMaterial(item.getValueNum(), item.getProperty().getMaterialValue());
+                        break;
+                    case EProperty.BEAST:
+                        beast = beast + getMaterial(item.getValueNum(), item.getProperty().getMaterialValue());
+                        break;
+                    case EProperty.WOOD:
+                        wood = wood + getMaterial(item.getValueNum(), item.getProperty().getMaterialValue());
+                        break;
+                    case EProperty.DRUG:
+                        drug = drug + getMaterial(item.getValueNum(), item.getProperty().getMaterialValue());
+                        break;
+                    case EProperty.MAGIC:
+                        magic = magic + getMaterial(item.getValueNum(), item.getProperty().getMaterialValue());
+                        break;
+                }
+            }
+        }
+        materialBuilder = null;
+        materialBuilder = new StringBuilder();
+        materialBuilder.append("消耗素材：").append("\n");
+        if (metal != 0) {
+            materialBuilder.append("消耗金属：").append(metal).append("pt").append("\n");
+        }
+        if (cloth != 0) {
+            materialBuilder.append("消耗布料：").append(cloth).append("pt").append("\n");
+        }
+        if (beast != 0) {
+            materialBuilder.append("消耗兽品：").append(beast).append("pt").append("\n");
+        }
+        if (wood != 0) {
+            materialBuilder.append("消耗木材：").append(wood).append("pt").append("\n");
+        }
+        if (drug != 0) {
+            materialBuilder.append("消耗药品：").append(drug).append("pt").append("\n");
+        }
+        if (magic != 0) {
+            materialBuilder.append("消耗魔素：").append(magic).append("pt").append("\n");
+        }
+        consumeTv.setText(materialBuilder);
+    }
+
+    private int getMaterial(int value, double defalutMaterial) {
+        return (int) (defalutMaterial * (value * (value + 1) * (2 * value + 1)) / 6);
     }
 
     /**
@@ -387,6 +457,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         rateTv.setText(rate + 100 + "%");
         unLockPotential();
         stepsTv.setText("");
+        consumeTv.setText("");
         updatePage();
     }
 
@@ -549,6 +620,11 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         }
         for (EOptionItem item : optionItems) {
             if (item.getGroup() == options1 && item.getPosition() == options2) {
+                if (optionItems.get(selectOptions) != null && optionItems.get(selectOptions).getProperty() != null) {
+                    if (item.getProperty().getName().equals(optionItems.get(selectOptions).getProperty().getName())) {
+                        return;
+                    }
+                }
                 ToastUtils.showShort(R.string.e_assistant_repetition_hint);
                 return;
             }
@@ -561,17 +637,20 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             item.setProperty(groupList.get(options1).getPropertyList().get(options2));
             optionAdatper.updateData(optionItems);
             updatePage();
-            lockPotential();
         }
     }
 
     private void lockPotential() {
-        potentialLock = true;
-        potentialImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_enchantment_lock));
+        if (!potentialLock) {
+            potentialLock = true;
+            potentialImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_enchantment_lock));
+        }
     }
 
     private void unLockPotential() {
-        potentialLock = false;
-        potentialImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_enchantment_unlock));
+        if (potentialLock) {
+            potentialLock = false;
+            potentialImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_enchantment_unlock));
+        }
     }
 }
