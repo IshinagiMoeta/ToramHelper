@@ -2,6 +2,8 @@ package com.mika.toramhelper.base;
 
 import android.app.Application;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
+
 
 /**
  * Created by moeta on 2018/12/5.
@@ -13,5 +15,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        TypefaceProvider.registerDefaultIconSets();
     }
 }

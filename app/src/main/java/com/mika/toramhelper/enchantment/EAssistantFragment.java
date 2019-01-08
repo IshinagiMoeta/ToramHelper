@@ -14,10 +14,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -69,17 +70,17 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.eoption_recycler)
     RecyclerView eOptionRecyclerView;
     @BindView(R.id.e_assistant_clear_btn)
-    Button clearBtn;
+    BootstrapButton clearBtn;
     @BindView(R.id.e_assistant_start_btn)
-    Button startBtn;
+    BootstrapButton startBtn;
     @BindView(R.id.e_assistant_lv_tv)
-    TextView lvTv;
+    BootstrapEditText lvTv;
     @BindView(R.id.e_assistant_point_tv)
-    TextView pointTv;
+    BootstrapEditText pointTv;
     @BindView(R.id.e_assistant_potential_tv)
-    TextView potentialTv;
+    BootstrapEditText potentialTv;
     @BindView(R.id.e_assistant_defalut_potential_tv)
-    TextView defalutPotentialTv;
+    BootstrapEditText defalutPotentialTv;
     @BindView(R.id.e_assistant_success_rate_tv)
     TextView rateTv;
     @BindView(R.id.e_assistant_residue_tv)
@@ -92,6 +93,8 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     SegmentControl equipSelector;
     @BindView(R.id.e_assistant_potential_lock)
     ImageView potentialImg;
+    @BindView(R.id.e_assistant_defalut_potential_hint_img)
+    ImageView potentialHintImg;
 
 
     private EOptionAdatper optionAdatper;
@@ -120,6 +123,22 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     private void initEvent() {
         clearBtn.setOnClickListener(this);
         startBtn.setOnClickListener(this);
+        potentialTv.setOnClickListener(this);
+        potentialImg.setOnClickListener(this);
+        potentialHintImg.setOnClickListener(this);
+
+        equipSelector.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
+            @Override
+            public void onSegmentControlClick(int index) {
+                if (WEAPON_INDEX == index) {
+                    weapon = true;
+                } else if (ARMOR_INDEX == index) {
+                    weapon = false;
+                }
+                clearPage();
+            }
+        });
+
         lvTv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -141,8 +160,6 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 }
             }
         });
-        potentialTv.setOnClickListener(this);
-        potentialImg.setOnClickListener(this);
         potentialTv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -180,17 +197,6 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                     defalutPotential = Integer.parseInt(String.valueOf(defalutPotentialTv.getText()));
                     updatePage();
                 }
-            }
-        });
-        equipSelector.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
-            @Override
-            public void onSegmentControlClick(int index) {
-                if (WEAPON_INDEX == index) {
-                    weapon = true;
-                } else if (ARMOR_INDEX == index) {
-                    weapon = false;
-                }
-                clearPage();
             }
         });
         pointTv.addTextChangedListener(new TextWatcher() {
@@ -288,11 +294,26 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             case R.id.e_assistant_potential_lock:
                 changePotentialHint();
                 break;
+            case R.id.e_assistant_defalut_potential_hint_img:
+                popupPotentialHint();
+                break;
             default:
                 break;
         }
     }
 
+    private void popupPotentialHint() {
+//        EasyPopup mCirclePop = EasyPopup.create()
+//                .setContentView(getContext(), R.layout.potential_hint_content)
+//                //是否允许点击PopupWindow之外的地方消失
+//                .setFocusAndOutsideEnable(true)
+//                .apply();
+//        mCirclePop.showAtLocation(potentialHintImg, YGravity.BELOW, 5, 5);
+    }
+
+    /**
+     * 解锁提示
+     */
     private void changePotentialHint() {
         if (potentialLock) {
             AlertDialog.Builder hintDialogBuild =
@@ -404,6 +425,9 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
      * 输出步骤
      */
     private void outputStep() {
+        if (potential == 0) {
+            return;
+        }
         if (stepBuilder == null) {
             stepBuilder = new StringBuilder();
         }
@@ -421,7 +445,9 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 stepBuilder.append(item.getProperty().getName()).append(" ").append(valueStr).append(" | ");
             }
         }
-        stepBuilder.deleteCharAt(stepBuilder.lastIndexOf("|"));
+        if (stepBuilder.length() != 0 && stepBuilder.lastIndexOf("|") >= 0) {
+            stepBuilder.deleteCharAt(stepBuilder.lastIndexOf("|"));
+        }
         stepBuilder.append("剩余潜力:").append(realPotential).append(" ");
         String rate = StringUtils.getString(R.string.e_assistant_success_rate);
         stepBuilder.append(rate).append(successRate).append("%");
@@ -456,6 +482,8 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         String rate = StringUtils.getString(R.string.e_assistant_success_rate);
         rateTv.setText(rate + 100 + "%");
         unLockPotential();
+        stepBuilder = null;
+        materialBuilder = null;
         stepsTv.setText("");
         consumeTv.setText("");
         updatePage();
@@ -516,7 +544,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 }
             }
 
-            if (item.getGroup() == 2 || item.getGroup() == 6) {
+            if (item.getGroup() == 2 || item.getGroup() == 6 || item.getGroup() == 3) {
                 //防御力选项
                 if (weapon) {
                     onesConsumePotential = onesConsumePotential * ADDITIONAL_FACTOR;
@@ -541,11 +569,10 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             } else {
                 consumePotential += onesConsumePotential;
             }
-            //计算同类加成
             Integer num = groupMap.get(String.valueOf(item.getGroup()));
             groupMap.put(String.valueOf(item.getGroup()), num == null ? 1 : num + 1);
         }
-
+        //计算同类加成
         for (String key : groupMap.keySet()) {
             if (groupMap.get(key) > 1) {
                 consumePotential = (int) (consumePotential * ((100.0 + groupMap.get(key) * groupMap.get(key) * 5) / 100));

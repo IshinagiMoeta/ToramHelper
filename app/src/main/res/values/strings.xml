@@ -12,7 +12,7 @@
     <string name="nav_enchantment_menu">附魔</string>
     <string name="nav_enchantment_menu_1">附魔简介</string>
     <string name="nav_enchantment_menu_2">附魔计算</string>
-    <string name="nav_enchantment_menu_3">附魔模拟</string>
+    <string name="nav_enchantment_menu_3">附魔公式</string>
     <string name="nav_refine_menu">精炼</string>
     <string name="nav_strategy_menu">攻略</string>
     <!--侧边栏按键 end-->

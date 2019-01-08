@@ -43,7 +43,7 @@
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
-                        <EditText
+                        <com.beardedhen.androidbootstrap.BootstrapEditText
                             android:id="@+id/e_assistant_lv_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
@@ -53,6 +53,7 @@
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
+                            android:imeOptions="actionDone"
                             android:inputType="number"
                             android:text="@string/_165"
                             android:textCursorDrawable="@null"
@@ -73,7 +74,7 @@
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
-                        <EditText
+                        <com.beardedhen.androidbootstrap.BootstrapEditText
                             android:id="@+id/e_assistant_point_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
@@ -83,6 +84,7 @@
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
+                            android:imeOptions="actionDone"
                             android:inputType="number"
                             android:text="@string/_255"
                             android:textCursorDrawable="@null"
@@ -93,7 +95,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:gravity="center_horizontal">
+                        android:gravity="center_vertical">
 
                         <com.sevenheaven.segmentcontrol.SegmentControl
                             android:id="@+id/e_assistant_equip_selector"
@@ -131,7 +133,7 @@
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
-                        <EditText
+                        <com.beardedhen.androidbootstrap.BootstrapEditText
                             android:id="@+id/e_assistant_potential_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
@@ -141,6 +143,7 @@
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
+                            android:imeOptions="actionDone"
                             android:inputType="number"
                             android:text=""
                             android:textCursorDrawable="@null"
@@ -151,6 +154,8 @@
                             android:id="@+id/e_assistant_potential_lock"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
                             android:contentDescription="@string/app_name"
                             android:src="@drawable/ic_enchantment_unlock" />
                     </LinearLayout>
@@ -158,6 +163,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -167,7 +173,7 @@
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
-                        <EditText
+                        <com.beardedhen.androidbootstrap.BootstrapEditText
                             android:id="@+id/e_assistant_defalut_potential_tv"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
@@ -177,11 +183,21 @@
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
+                            android:imeOptions="actionDone"
                             android:inputType="number"
                             android:text="@string/_15"
                             android:textCursorDrawable="@null"
                             android:textSize="14sp"
                             tools:ignore="LabelFor" />
+
+                        <ImageView
+                            android:id="@+id/e_assistant_defalut_potential_hint_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/e_assistant_defalut_potential_hint_img" />
                     </LinearLayout>
 
                     <View
@@ -230,20 +246,34 @@
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
-                    <Button
+                    <com.beardedhen.androidbootstrap.BootstrapButton
                         android:id="@+id/e_assistant_start_btn"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:text="@string/e_assistant_start"
+                        app:bootstrapBrand="success"
+                        app:bootstrapSize="lg"
+                        app:buttonMode="regular"
+                        app:roundedCorners="true"
+                        app:showOutline="false"
                         tools:ignore="ButtonStyle" />
 
-                    <Button
+                    <View
+                        android:layout_width="20dp"
+                        android:layout_height="50dp" />
+
+                    <com.beardedhen.androidbootstrap.BootstrapButton
                         android:id="@+id/e_assistant_clear_btn"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:text="@string/e_assistant_clear"
+                        app:bootstrapBrand="warning"
+                        app:bootstrapSize="lg"
+                        app:buttonMode="regular"
+                        app:roundedCorners="true"
+                        app:showOutline="false"
                         tools:ignore="ButtonStyle" />
                 </LinearLayout>
 

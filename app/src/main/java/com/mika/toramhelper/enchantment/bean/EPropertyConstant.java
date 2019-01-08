@@ -91,7 +91,7 @@ public class EPropertyConstant {
         propertyList.add(new EProperty("HP自然恢复", 5, EProperty.METAL, 25));
         propertyList.add(new EProperty("HP自然恢复%", 10, EProperty.METAL, 50));
         propertyList.add(new EProperty("MP自然恢复", 10, EProperty.WOOD, 50));
-        propertyList.add(new EProperty("HP自然恢复%", 20, EProperty.WOOD, 100));
+        propertyList.add(new EProperty("MP自然恢复%", 20, EProperty.WOOD, 100));
         propertyList.add(new EProperty("HP上限", 3, EProperty.METAL, 16.5, 10));
         propertyList.add(new EProperty("HP上限%", 10, EProperty.METAL, 50));
         propertyList.add(new EProperty("MP上限", 6, EProperty.WOOD, 33.5, 10));

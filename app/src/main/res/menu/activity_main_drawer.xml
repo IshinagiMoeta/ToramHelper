@@ -7,7 +7,7 @@
             android:id="@+id/menu_strategy"
             android:checkable="true"
             android:icon="@drawable/ic_menu_strategy"
-            android:title="论坛攻略" />
+            android:title="@string/nav_strategy_menu" />
         <item android:title="@string/nav_skill_menu">
             <menu>
                 <item
