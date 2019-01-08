@@ -48,6 +48,7 @@
     <string name="e_assistant_no_fill_potential_hint">请先填写潜力值后再尝试选择能力</string>
     <string name="e_assistant_not_allowOperation_hint">潜力值为0或者六项属性附满后不可以再次附魔</string>
     <string name="e_assistant_change_potential_hint">解锁需要清空整个页面重新计算，是否确定?</string>
+    <string name="e_assistant_default_potential_hint">装备基础潜力值在计算成功率时需要用到。\n成功率 = 附魔完剩馀潜力 / MAX(当前潜力,装备基础潜力) * 230 + 130</string>
     <string name="e_assistant_repetition_hint">该属性已存在,请选择不同属性附魔</string>
     <string name="e_assistant_no_choose_hint">防具不可选择属性觉醒,请重新选择</string>
 

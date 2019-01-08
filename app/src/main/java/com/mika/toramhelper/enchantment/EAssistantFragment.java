@@ -303,12 +303,11 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     }
 
     private void popupPotentialHint() {
-//        EasyPopup mCirclePop = EasyPopup.create()
-//                .setContentView(getContext(), R.layout.potential_hint_content)
-//                //是否允许点击PopupWindow之外的地方消失
-//                .setFocusAndOutsideEnable(true)
-//                .apply();
-//        mCirclePop.showAtLocation(potentialHintImg, YGravity.BELOW, 5, 5);
+        AlertDialog.Builder hintDialogBuild =
+                new AlertDialog.Builder(getContext());
+        hintDialogBuild.setTitle(StringUtils.getString(R.string.mika_hint));
+        hintDialogBuild.setMessage(StringUtils.getString(R.string.e_assistant_default_potential_hint));
+        hintDialogBuild.show();
     }
 
     /**
