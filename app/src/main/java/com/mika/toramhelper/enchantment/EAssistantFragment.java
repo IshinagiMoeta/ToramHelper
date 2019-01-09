@@ -344,19 +344,21 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
      */
     private void startEnchantment() {
         lockPotential();
+        allowOperation = false;
         for (EOptionItem item : optionItems) {
             if (item.getProperty() != null && item.getValueNum() != 0) {
                 item.setDeploy(true);
                 item.setDeployValue(item.getValueNum());
             }
-            allowOperation = item.getProperty() == null;
-            optionAdatper.setAllowOperation(allowOperation);
+            if (item.getProperty() == null) {
+                allowOperation = true;
+            }
         }
         if (realPotential < 0) {
             realPotential = 0;
             allowOperation = false;
-            optionAdatper.setAllowOperation(allowOperation);
         }
+        optionAdatper.setAllowOperation(allowOperation);
         outputStep();
         outputMaterial();
         hisPotential = realPotential;
@@ -417,6 +419,9 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     }
 
     private int getMaterial(int value, double defalutMaterial) {
+        if (value < 0) {
+            value = -value;
+        }
         return (int) (defalutMaterial * (value * (value + 1) * (2 * value + 1)) / 6);
     }
 
@@ -543,7 +548,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 }
             }
 
-            if (item.getGroup() == 2 || item.getGroup() == 6 || item.getGroup() == 3) {
+            if (item.getGroup() == 2 || item.getGroup() == 6 || item.getGroup() == 4) {
                 //防御力选项
                 if (weapon) {
                     onesConsumePotential = onesConsumePotential * ADDITIONAL_FACTOR;
