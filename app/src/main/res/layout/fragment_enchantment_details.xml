@@ -1,19 +1,43 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mika.toramhelper.enchantment.EDetailsFragment">
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/e_details_reload_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/mika_reload"
+        android:visibility="invisible"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="xl"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <WebView
-            android:id="@+id/details_web"
+            android:id="@+id/e_details_web"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
-
     </ScrollView>
-</FrameLayout>
+
+    <com.beardedhen.androidbootstrap.BootstrapProgressBar
+
+        android:id="@+id/e_details_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        app:animated="true"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:striped="true" />
+
+</RelativeLayout>

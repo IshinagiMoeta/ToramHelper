@@ -58,6 +58,11 @@ public class MainAct extends BaseActivity
         initSelect();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     private void initSelect() {
         FragmentTransaction transaction = mFragmentMan.beginTransaction().setCustomAnimations(
                 android.R.anim.fade_in, android.R.anim.fade_out);
@@ -81,7 +86,7 @@ public class MainAct extends BaseActivity
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.app_name, R.string.app_name);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 

@@ -22,6 +22,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    /*配置渠道*/
+    flavorDimensions "defalut"
+    productFlavors {
+        defalutB {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "debug",
+                                    UMENG_APP_KEY: "5c3552c7f1f556c671001146",
+                                    MTA_APPKEY: "A8KPY3V94JPU",
+                                    MTA_CHANNEL: "debug"]
+        }
+        defalutA {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "defalut",
+                                    UMENG_APP_KEY: "5c3552c7f1f556c671001146",
+                                    MTA_APPKEY: "A8KPY3V94JPU",
+                                    MTA_CHANNEL: "defalut"]
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -37,4 +60,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.5.1'
     implementation 'com.7heaven.widgets:segmentcontrol:1.17'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    //MTA主包
+    implementation 'com.qq.mta:mta:3.4.2'
+    //MID基础包
+    implementation 'com.tencent.mid:mid:3.73-release'
 }

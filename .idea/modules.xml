@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ToramHelper.iml" filepath="$PROJECT_DIR$/ToramHelper.iml" />
-      <module fileurl="file://D:\ASWorkSpace\ToramHelper\ToramHelper.iml" filepath="D:\ASWorkSpace\ToramHelper\ToramHelper.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\ASWorkSpace\ToramHelper\app\app.iml" filepath="D:\ASWorkSpace\ToramHelper\app\app.iml" />
     </modules>
   </component>
 </project>

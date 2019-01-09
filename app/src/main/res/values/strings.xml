@@ -17,22 +17,31 @@
     <string name="nav_strategy_menu">攻略</string>
     <!--侧边栏按键 end-->
 
+    <!--通用部分 start-->
+    <string name="_0">0</string>
+    <string name="_15">15</string>
+    <string name="_165">165</string>
+    <string name="_155">155</string>
+    <string name="_255">255</string>
+
     <string name="_defalut">defalut</string>
     <string name="mika_hint">提示</string>
     <string name="mika_warn">警告</string>
     <string name="mika_close">关闭</string>
     <string name="mika_ok">确认</string>
     <string name="mika_cancel">取消</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="mika_connectionless">暂时无网络连接，请稍后重新加载</string>
+    <!--通用部分 end-->
 
     <string name="action_settings">Settings</string>
+
+    <!--附魔计算 start-->
     <string name="eoption_item_sub">-</string>
     <string name="eoption_item_min">MIN</string>
     <string name="eoption_item_add">+</string>
     <string name="eoption_item_max">MAX</string>
     <string name="eoption_item_null_hint">请选择能力</string>
+
     <string name="e_assistant_lv">角色等级</string>
     <string name="e_assistant_point">技巧点数</string>
     <string name="e_assistant_potential">潜力值</string>
@@ -51,11 +60,7 @@
     <string name="e_assistant_default_potential_hint">装备基础潜力值在计算成功率时需要用到。\n成功率 = 附魔完剩馀潜力 / MAX(当前潜力,装备基础潜力) * 230 + 130</string>
     <string name="e_assistant_repetition_hint">该属性已存在,请选择不同属性附魔</string>
     <string name="e_assistant_no_choose_hint">防具不可选择属性觉醒,请重新选择</string>
-
-    <string name="_0">0</string>
-    <string name="_15">15</string>
-    <string name="_165">165</string>
-    <string name="_155">155</string>
-    <string name="_255">255</string>
-
+    <string name="mika_reload">重新加载</string>
+    <string name="mika_load_faild">加载失败</string>
+    <!--附魔计算 end-->
 </resources>

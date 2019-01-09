@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mika.toramhelper">
 
+    <!--UMENG 所需权限 START-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--UMENG 所需权限 END-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -14,6 +19,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--UMENG START-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="${UMENG_APP_KEY}" />
+
+        <!--value的值填写渠道名称，例如yingyongbao。这里设置动态渠道名称变量-->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+        <!--UMENG END-->
+
         <activity
             android:name=".base.MainAct"
             android:label="@string/app_name"

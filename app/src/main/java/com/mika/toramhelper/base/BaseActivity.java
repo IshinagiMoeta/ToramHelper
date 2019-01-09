@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.mika.toramhelper.common.BuildConfig;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -20,11 +22,25 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    protected void bind(){
+    protected void bind() {
         ButterKnife.bind(this);
     }
 
     protected void log(String msg) {
-        LogUtils.vTag(this.getLocalClassName(), msg);
+        if (BuildConfig.DEBUG) {
+            LogUtils.vTag(this.getLocalClassName(), msg);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }
