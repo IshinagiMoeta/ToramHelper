@@ -27,7 +27,7 @@ public class EProperty {
 
     @IntDef({METAL, CLOTH, BEAST, WOOD, DRUG, MAGIC})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface MATERIALTYPE {
+    @interface MATERIALTYPE {
 
     }
 

@@ -1,5 +1,4 @@
-package com.mika.toramhelper.enchantment;
-
+package com.mika.toramhelper.base;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,11 +6,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -21,32 +17,24 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapProgressBar;
 import com.blankj.utilcode.util.ToastUtils;
 import com.mika.toramhelper.R;
-import com.mika.toramhelper.base.BaseFragment;
 import com.mika.toramhelper.common.Common;
 
 import butterknife.BindView;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class EDetailsFragment extends BaseFragment implements View.OnClickListener {
-
-    @BindView(R.id.e_details_web)
+public class GratitudeActivity extends BaseActivity implements View.OnClickListener {
+    @BindView(R.id.gratitude_web)
     WebView webView;
-    @BindView(R.id.e_details_reload_btn)
+    @BindView(R.id.gratitude_reload_btn)
     BootstrapButton reloadBtn;
-    @BindView(R.id.e_details_progress_bar)
+    @BindView(R.id.gratitude_progress_bar)
     BootstrapProgressBar progressBar;
-
-    public EDetailsFragment() {
-    }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.fragment_enchantment_details, container, false);
-        bind(inflate);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gratitude);
+        bind();
         WebSettings webSettings = webView.getSettings();
         /* 设置支持Js,必须设置的,不然网页基本上不能看 */
         webSettings.setJavaScriptEnabled(true);
@@ -58,10 +46,6 @@ public class EDetailsFragment extends BaseFragment implements View.OnClickListen
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         /* 大部分网页需要自己保存一些数据,这个时候就的设置下面这个属性 */
         webSettings.setDomStorageEnabled(true);
-//        /* 设置为使用webview推荐的窗口 */
-//        webSettings.setUseWideViewPort(true);
-//        /* 设置网页自适应屏幕大小 ---这个属性应该是跟上面一个属性一起用 */
-//        webSettings.setLoadWithOverviewMode(true);
         /* HTML5的地理位置服务,设置为true,启用地理定位 */
         webSettings.setGeolocationEnabled(true);
         /* 设置是否允许webview使用缩放的功能,我这里设为false,不允许 */
@@ -124,11 +108,10 @@ public class EDetailsFragment extends BaseFragment implements View.OnClickListen
         reloadBtn.setOnClickListener(this);
 
         getUrl();
-        return inflate;
     }
 
     private void getUrl() {
-        String url = Common.getEnchantmentDetailsUrl(getContext());
+        String url = Common.getGratitudeUrl(this);
         if (TextUtils.isEmpty(url)) {
             reloadBtn.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
@@ -148,5 +131,10 @@ public class EDetailsFragment extends BaseFragment implements View.OnClickListen
                 getUrl();
                 break;
         }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

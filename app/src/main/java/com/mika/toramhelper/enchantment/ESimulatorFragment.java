@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mika.toramhelper.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mika.toramhelper.base.BaseFragment;
+import com.mika.toramhelper.common.GsonUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ESimulatorFragment extends Fragment {
+public class ESimulatorFragment extends BaseFragment {
 
 
     public ESimulatorFragment() {
@@ -27,8 +26,9 @@ public class ESimulatorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_enchantment_simulator, container, false);
-
+        View inflate = inflater.inflate(R.layout.fragment_enchantment_simulator, container, false);
+        bind(inflate);
+        log(GsonUtils.getInstance().getJson());
+        return inflate;
     }
-
 }

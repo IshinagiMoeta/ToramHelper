@@ -12,7 +12,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "0.1_test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -28,15 +28,15 @@ android {
     productFlavors {
         defalutB {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "debug",
-                                    UMENG_APP_KEY: "5c3552c7f1f556c671001146",
-                                    MTA_APPKEY: "A8KPY3V94JPU",
-                                    MTA_CHANNEL: "debug"]
+                                    UMENG_APP_KEY      : "5c3552c7f1f556c671001146",
+                                    MTA_APPKEY         : "A8KPY3V94JPU",
+                                    MTA_CHANNEL        : "debug"]
         }
         defalutA {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "defalut",
-                                    UMENG_APP_KEY: "5c3552c7f1f556c671001146",
-                                    MTA_APPKEY: "A8KPY3V94JPU",
-                                    MTA_CHANNEL: "defalut"]
+                                    UMENG_APP_KEY      : "5c3552c7f1f556c671001146",
+                                    MTA_APPKEY         : "A8KPY3V94JPU",
+                                    MTA_CHANNEL        : "defalut"]
         }
     }
 
@@ -50,6 +50,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:design:26.1.0'

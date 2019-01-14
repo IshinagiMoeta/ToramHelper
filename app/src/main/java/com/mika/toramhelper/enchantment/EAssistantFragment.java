@@ -52,7 +52,10 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     private static final int ARMOR_INDEX = 1;
     private static final int ADDITIONAL_FACTOR = 2;
     private static double CONSUME_COEFFICIENT = (float) 0.305;
+    private static int CLEAR_ALL = 1;
+    private static int CLEAR_RESULT = 2;
     private List<EPropertyGroup> groupList;
+
 
     private ArrayList<String> groupNameItems = new ArrayList<>();
     private ArrayList<ArrayList<String>> propertyNameItems = new ArrayList<>();
@@ -113,7 +116,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         initOptionPicker();
         initOptionList();
         initEvent();
-        clearPage();
+        clearPage(CLEAR_ALL);
         return view;
     }
 
@@ -135,7 +138,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 } else if (ARMOR_INDEX == index) {
                     weapon = false;
                 }
-                clearPage();
+                clearPage(CLEAR_ALL);
             }
         });
 
@@ -156,7 +159,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                     Integer lvNum = Integer.parseInt(String.valueOf(lvTv.getText()));
                     lvValue = lvNum / 10;
                     optionAdatper.setLvLimit(lvValue);
-                    clearPage();
+                    clearPage(CLEAR_ALL);
                 }
             }
         });
@@ -215,8 +218,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(pointTv.getText())) {
                     int point = Integer.parseInt(String.valueOf(pointTv.getText()));
                     CONSUME_COEFFICIENT = ((double) point * 0.001 + 0.05);
-                    log(String.valueOf(CONSUME_COEFFICIENT));
-                    clearPage();
+                    clearPage(CLEAR_ALL);
                 }
             }
         });
@@ -288,7 +290,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                 }
                 break;
             case R.id.e_assistant_clear_btn:
-                clearPage();
+                clearPage(CLEAR_ALL);
                 break;
             case R.id.e_assistant_potential_tv:
             case R.id.e_assistant_potential_lock:
@@ -324,7 +326,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             unLockPotential();
-                            clearPage();
+                            clearPage(CLEAR_RESULT);
                         }
                     });
             hintDialogBuild.setNegativeButton(StringUtils.getString(R.string.mika_close),
@@ -463,7 +465,8 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
      * 清理页面
      */
     @SuppressLint("SetTextI18n")
-    private void clearPage() {
+    private void clearPage(int mode) {
+        stepNum = 0;
         allowOperation = true;
         optionAdatper.setAllowOperation(true);
         if (!TextUtils.isEmpty(potentialTv.getText())) {
@@ -473,10 +476,12 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         }
 
         for (EOptionItem item : optionItems) {
-            item.setProperty(null);
-            item.setValue(0);
-            item.setPosition(0);
-            item.setGroup(0);
+            if (mode == CLEAR_ALL) {
+                item.setProperty(null);
+                item.setValue(0);
+                item.setPosition(0);
+                item.setGroup(0);
+            }
             item.setDeploy(false);
             item.setDeployValue(0);
         }
@@ -503,16 +508,17 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
         residueTv.setText(residue + realPotential + "/" + hisPotential);
         int denominator = hisPotential > defalutPotential ? hisPotential : defalutPotential;
         if (denominator != 0) {
-            successRate = 130 + (int) (230 * (float) realPotential / denominator);
+            successRate = (int) (130 + (230 * (float) realPotential / denominator));
         }
         if (successRate > 100) {
             successRate = 100;
         } else if (successRate < 0) {
             successRate = 0;
         }
-        successRate = successRate < 100 ? successRate : 100;
         String rate = StringUtils.getString(R.string.e_assistant_success_rate);
-        rateTv.setText(rate + successRate + "%");
+        if (hisPotential != 0) {
+            rateTv.setText(rate + successRate + "%");
+        }
     }
 
 

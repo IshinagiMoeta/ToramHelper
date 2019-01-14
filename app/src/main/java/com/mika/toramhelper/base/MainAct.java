@@ -1,5 +1,6 @@
 package com.mika.toramhelper.base;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -116,7 +117,7 @@ public class MainAct extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            //TODO setting
+            startActivity(new Intent(MainAct.this, GratitudeActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

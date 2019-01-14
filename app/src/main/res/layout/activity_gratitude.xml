@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.mika.toramhelper.base.GratitudeActivity">
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/gratitude_reload_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/mika_reload"
+        android:visibility="invisible"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="xl"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/gratitude_web"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+    </ScrollView>
+
+    <com.beardedhen.androidbootstrap.BootstrapProgressBar
+        android:id="@+id/gratitude_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        app:animated="true"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:striped="true" />
+
+</RelativeLayout>

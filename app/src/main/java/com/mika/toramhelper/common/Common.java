@@ -17,9 +17,21 @@ import com.tencent.stat.StatConfig;
 public class Common {
 
     public static final String ENCHANTMENT_DETAILS_URL = "enchantment_details_url";
+    public static final String GRATITUDE_URL = "gratitude_url";
 
     public static String getEnchantmentDetailsUrl(Context ctx) {
         String url = StatConfig.getCustomProperty(ctx, ENCHANTMENT_DETAILS_URL);
+        LogUtils.v(StatConfig.getCustomGlobalReportContent());
+        LogUtils.v(url);
+        if (TextUtils.isEmpty(url)) {
+            ToastUtils.showShort(R.string.mika_connectionless);
+            url = null;
+        }
+        return url;
+    }
+
+    public static String getGratitudeUrl(Context ctx) {
+        String url = StatConfig.getCustomProperty(ctx, GRATITUDE_URL);
         LogUtils.v(StatConfig.getCustomGlobalReportContent());
         LogUtils.v(url);
         if (TextUtils.isEmpty(url)) {
