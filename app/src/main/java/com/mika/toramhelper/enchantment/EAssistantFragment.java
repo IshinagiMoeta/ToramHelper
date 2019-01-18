@@ -583,11 +583,13 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             groupMap.put(String.valueOf(item.getGroup()), num == null ? 1 : num + 1);
         }
         //计算同类加成
+        float coefficient = 1;
         for (String key : groupMap.keySet()) {
             if (groupMap.get(key) > 1) {
-                consumePotential = (int) (consumePotential * ((100.0 + groupMap.get(key) * groupMap.get(key) * 5) / 100));
+                coefficient = (float) (coefficient + ((groupMap.get(key) * groupMap.get(key) * 5.0) / 100));
             }
         }
+        consumePotential = (int) (consumePotential * coefficient);
         realPotential = hisPotential - consumePotential;
     }
 
