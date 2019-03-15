@@ -5,6 +5,7 @@ import android.app.Application;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.blankj.utilcode.util.LogUtils;
 import com.mika.toramhelper.common.BuildConfig;
+import com.mika.toramhelper.common.RetrofitUtils;
 import com.tencent.stat.StatConfig;
 import com.tencent.stat.StatService;
 import com.umeng.commonsdk.UMConfigure;
@@ -40,6 +41,9 @@ public class MyApplication extends Application {
         }
         // 基础统计API
         StatService.registerActivityLifecycleCallbacks(this);
+
+        //初始化Retrofit
+        RetrofitUtils.getInstance(getApplicationContext());
 
     }
 }

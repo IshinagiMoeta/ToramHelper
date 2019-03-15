@@ -60,6 +60,9 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
     implementation 'com.jakewharton:butterknife:8.5.1'
     implementation 'com.7heaven.widgets:segmentcontrol:1.17'
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     //MTA主包
     implementation 'com.qq.mta:mta:3.4.2'

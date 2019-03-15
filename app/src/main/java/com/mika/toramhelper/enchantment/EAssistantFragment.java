@@ -48,34 +48,34 @@ import butterknife.BindView;
 public class EAssistantFragment extends BaseFragment implements View.OnClickListener {
 
 
-    private static final int WEAPON_INDEX = 0;
-    private static final int ARMOR_INDEX = 1;
-    private static final int ADDITIONAL_FACTOR = 2;
-    private static double CONSUME_COEFFICIENT = (float) 0.305;
-    private static int CLEAR_ALL = 1;
-    private static int CLEAR_RESULT = 2;
-    private List<EPropertyGroup> groupList;
+    private static final int                  WEAPON_INDEX        = 0;
+    private static final int                  ARMOR_INDEX         = 1;
+    private static final int                  ADDITIONAL_FACTOR   = 2;
+    private static       double               CONSUME_COEFFICIENT = (float) 0.305;
+    private static       int                  CLEAR_ALL           = 1;
+    private static       int                  CLEAR_RESULT        = 2;
+    private              List<EPropertyGroup> groupList;
 
 
-    private ArrayList<String> groupNameItems = new ArrayList<>();
+    private ArrayList<String>            groupNameItems    = new ArrayList<>();
     private ArrayList<ArrayList<String>> propertyNameItems = new ArrayList<>();
-    private OptionsPickerView pvOptions;
-    private boolean allowOperation = true;
-    private boolean weapon = true;
-    private boolean potentialLock = false;
-    private int lvValue = 16;
-    private int stepNum = 0;
-    private int selectOptions = -1;
-    private int potential, defalutPotential, realPotential, hisPotential;
-    private int successRate = 100;
+    private OptionsPickerView            pvOptions;
+    private boolean                      allowOperation    = true;
+    private boolean                      weapon            = true;
+    private boolean                      potentialLock     = false;
+    private int                          lvValue           = 16;
+    private int                          stepNum           = 0;
+    private int                          selectOptions     = -1;
+    private int                          potential, defalutPotential, realPotential, hisPotential;
+    private int           successRate = 100;
     private StringBuilder stepBuilder, materialBuilder;
 
     @BindView(R.id.eoption_recycler)
-    RecyclerView eOptionRecyclerView;
+    RecyclerView      eOptionRecyclerView;
     @BindView(R.id.e_assistant_clear_btn)
-    BootstrapButton clearBtn;
+    BootstrapButton   clearBtn;
     @BindView(R.id.e_assistant_start_btn)
-    BootstrapButton startBtn;
+    BootstrapButton   startBtn;
     @BindView(R.id.e_assistant_lv_tv)
     BootstrapEditText lvTv;
     @BindView(R.id.e_assistant_point_tv)
@@ -85,22 +85,22 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.e_assistant_defalut_potential_tv)
     BootstrapEditText defalutPotentialTv;
     @BindView(R.id.e_assistant_success_rate_tv)
-    TextView rateTv;
+    TextView          rateTv;
     @BindView(R.id.e_assistant_residue_tv)
-    TextView residueTv;
+    TextView          residueTv;
     @BindView(R.id.e_assistant_steps_tv)
-    TextView stepsTv;
+    TextView          stepsTv;
     @BindView(R.id.e_assistant_consume_tv)
-    TextView consumeTv;
+    TextView          consumeTv;
     @BindView(R.id.e_assistant_equip_selector)
-    SegmentControl equipSelector;
+    SegmentControl    equipSelector;
     @BindView(R.id.e_assistant_potential_lock)
-    ImageView potentialImg;
+    ImageView         potentialImg;
     @BindView(R.id.e_assistant_defalut_potential_hint_img)
-    ImageView potentialHintImg;
+    ImageView         potentialHintImg;
 
 
-    private EOptionAdatper optionAdatper;
+    private EOptionAdatper         optionAdatper;
     private ArrayList<EOptionItem> optionItems = new ArrayList<>();
 
     public EAssistantFragment() {
@@ -156,7 +156,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(lvTv.getText())) {
-                    Integer lvNum = Integer.parseInt(String.valueOf(lvTv.getText()));
+                    Integer lvNum = Integer.parseInt(String.valueOf(lvTv.getText()).trim());
                     lvValue = lvNum / 10;
                     optionAdatper.setLvLimit(lvValue);
                     clearPage(CLEAR_ALL);
@@ -176,7 +176,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(potentialTv.getText())) {
-                    potential = Integer.parseInt(String.valueOf(potentialTv.getText()));
+                    potential = Integer.parseInt(String.valueOf(potentialTv.getText()).trim());
                     realPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
                     hisPotential = Integer.parseInt(String.valueOf(potentialTv.getText()));
                 }
@@ -197,7 +197,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(defalutPotentialTv.getText())) {
-                    defalutPotential = Integer.parseInt(String.valueOf(defalutPotentialTv.getText()));
+                    defalutPotential = Integer.parseInt(String.valueOf(defalutPotentialTv.getText()).trim());
                     updatePage();
                 }
             }
@@ -216,7 +216,7 @@ public class EAssistantFragment extends BaseFragment implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(pointTv.getText())) {
-                    int point = Integer.parseInt(String.valueOf(pointTv.getText()));
+                    int point = Integer.parseInt(String.valueOf(pointTv.getText()).trim());
                     CONSUME_COEFFICIENT = ((double) point * 0.001 + 0.05);
                     clearPage(CLEAR_ALL);
                 }
